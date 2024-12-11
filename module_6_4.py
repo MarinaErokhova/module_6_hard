@@ -4,7 +4,7 @@ class Figure:
     sides_count = 0
     def __init__(self, color, *sides):
         self.__sides = list(*sides)
-        self.__color = int(color)
+        self.__color = list(color)
         self.filled = None
 
     def get_color(self):
@@ -42,7 +42,7 @@ class Figure:
 class Circle(Figure):
     sides_count = 1
     def __init__(self, color, *sides):
-        super.__init__(color, *sides)
+        super().__init__(color, *sides)
         self.__radius = len(self) / (2*pi)
 
 
@@ -54,22 +54,21 @@ class Triangle(Figure):
     __height = None
 
     def __init__(self, color, *sides):
-        super.__init__(color, sides)
+        super().__init__(color, sides)
 
     def get_square(self):
         a, b, c = self.get_sides()
         s = (a + b + c) / 2
         return sqrt(s * (s - a) * (s - b) * (s - c))
 
-
 class Cube(Figure):
     sides_count = 12
 
     def __init__(self, color, *sides):
+        super().__init__(color, *sides)
         if len(sides) != 1:
             sides = [1]
         sides = sides * self.sides_count
-        super().__init__(color, *sides)
 
     def get_volume(self):
         return self.sides ** 3
