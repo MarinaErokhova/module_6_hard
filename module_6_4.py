@@ -12,9 +12,8 @@ class Figure:
         return self.__color
 
     def __is_valid_color(self, r, g, b):
-        if isinstance(r,int) and isinstance(g,int) and isinstance(b,int):
-            return True
-        elif r in range(0, 255) and g in range(0, 255) and b in range(0, 255):
+        if (isinstance(r,int) and isinstance(g,int) and isinstance(b,int)) and \
+            (r in range(0, 255) and g in range(0, 255) and b in range(0, 255)):
             return True
         return False
 
@@ -22,7 +21,7 @@ class Figure:
         if self.__is_valid_color(r,g,b):
             self.__color = [r, g, b]
 
-    def __is_valid_sides(self, sides):
+    def __is_valid_sides(self, *sides):
         if len(sides)!= self.sides_count:
             return False
         for i in sides:
@@ -42,13 +41,22 @@ class Figure:
 
 class Circle(Figure):
     sides_count = 1
-    def __init__(self, color, sides):
-        super().__init__(color, sides)
+    def __init__(self, color, *sides):
+        super().__init__(color, *sides)
         self.__sides = sides
-        self.__radius = self.__sides[0] / (2*pi)
+        self.__radius = int(self.__sides[0] / (2*pi))
+
+    def __len__(self):
+         return sum(self.__sides)
 
     def get_square(self):
         return (self.__radius ** 2) * pi
+
+    def get_sides(self):
+        return self.__sides
+
+    def set_sides(self, *new_sides):
+        self.__sides = new_sides
 
 class Triangle(Figure):
     sides_count = 3
@@ -67,13 +75,14 @@ class Cube(Figure):
     sides_count = 12
 
     def __init__(self, color, *sides):
-        super().__init__(color, *sides)
-        self.__sides = [sides[0]] * self.sides_count  # переопределение __sides
-        print(self.__sides)
+        self.__sides = [sides[0]] * self.sides_count
+        super().__init__(color, *sides)# переопределение __sides
+
+    def get_sides(self):
+        return self.__sides
 
     def get_volume(self):
         return self.__sides[0] ** 3
-
 
 circle1 = Circle((200, 200, 100), 10) # (Цвет, стороны)
 cube1 = Cube((222, 35, 130), 6)
